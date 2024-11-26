@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ComputerApi.Controllers
+namespace ComputerApi.Controllers//:D
 {
     [Route("computer")]
     [ApiController]
@@ -31,7 +31,7 @@ namespace ComputerApi.Controllers
 
             if (comp != null)
             {
-                await computerContext.Comps.AddAsync(comp);
+                await computerContext.Computers.AddAsync(comp);
                 await computerContext.SaveChangesAsync();
                 return StatusCode(201, comp);
             }
@@ -42,7 +42,22 @@ namespace ComputerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<Comp>> Get()
         {
-            return Ok(await computerContext.Comps.ToListAsync());
+            return Ok(await computerContext.Computers.Select(x => new { x.Brand, x.Type, x.Memory, x.Os.Name }).ToListAsync());
+
         }
+
+        [HttpGet("numberOfComputers")]
+        public async Task<ActionResult> GetNumberOfComputers()
+        {
+            var comps = await computerContext.Computers.ToListAsync();
+            return Ok(new { message = "Sikeres lekérdezés", result = comps.Count });
+        }
+
+        [HttpGet("allWindowsOsComputer")]
+        public async Task<ActionResult<Comp>> GetAllWindowsOsComputer()
+        {
+            return Ok(await computerContext.Computers.Where(x => x.Os.Name.Contains("linux")).Select(x => new { comp = x, osName = x.Os.Name }).ToListAsync());
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 
 using ComputerApi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace ComputerApi
 {
@@ -15,6 +16,8 @@ namespace ComputerApi
                 var connectionString = builder.Configuration.GetConnectionString("MySql");
                 option.UseMySQL(connectionString);
             });
+
+            builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             // Add services to the container.
 
