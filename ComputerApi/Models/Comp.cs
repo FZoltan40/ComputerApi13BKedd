@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ComputerApi.Models;
+﻿namespace ComputerApi.Models;
 
 public partial class Comp
 {
@@ -18,6 +15,5 @@ public partial class Comp
     public DateTime? CreatedTime { get; set; }
 
     public Guid? OsId { get; set; }
-
     public virtual OSystem? Os { get; set; }
 }
